@@ -1,5 +1,4 @@
 import together
-import together
 import os
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings.huggingface import HuggingFaceBgeEmbeddings
