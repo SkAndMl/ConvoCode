@@ -1,0 +1,342 @@
+
+
+
+
+
+
+Under-the-hood documentation for developers — NumPy v1.26 Manual
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  User Guide
+ 
+
+
+
+  API reference
+ 
+
+
+
+  Development
+ 
+
+
+
+  Release notes
+ 
+
+
+Learn
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        1.26  
+
+
+
+
+
+
+
+
+
+
+
+
+
+GitHub
+
+
+
+Twitter
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  Getting started
+ 
+
+
+
+
+   What is NumPy?
+  
+
+
+
+   Installation
+  
+
+
+
+   NumPy quickstart
+  
+
+
+
+   NumPy: the absolute basics for beginners
+  
+
+
+
+
+  Fundamentals and usage
+ 
+
+
+
+
+   NumPy fundamentals
+  
+
+
+
+
+
+   NumPy for MATLAB users
+  
+
+
+
+   NumPy Tutorials
+  
+
+
+
+   NumPy how-tos
+  
+
+
+
+
+  Advanced usage and interoperability
+ 
+
+
+
+
+   Building from source
+  
+
+
+
+   Using NumPy C-API
+  
+
+
+
+   F2PY user guide and reference manual
+  
+
+
+
+   Under-the-hood documentation for developers
+  
+
+
+
+
+
+
+
+
+     Internal organization of NumPy arrays
+    
+
+
+
+     NumPy C code explanations
+    
+
+
+
+     Memory alignment
+    
+
+
+
+     Byte-swapping
+    
+
+
+
+     Writing custom array containers
+    
+
+
+
+     Subclassing ndarray
+    
+
+
+
+
+
+   Interoperability with NumPy
+  
+
+
+
+
+  Extras
+ 
+
+
+
+
+   Glossary
+  
+
+
+
+   Release notes
+  
+
+
+
+   NumPy license
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Under-the-hood documentation for developers#
+These documents are intended as a low-level look into NumPy; focused
+towards developers.
+
+
+Internal organization of NumPy arrays
+NumPy C code explanations
+Memory alignment
+Byte-swapping
+Writing custom array containers
+Subclassing ndarray
+
+
+
+
+
+
+
+
+
+
+previous
+F2PY and PGI Fortran on Windows
+
+
+
+
+next
+Internal organization of NumPy arrays
+
+
+
+
+
+
+
+
+
+
+
+
+
+    © Copyright 2008-2022, NumPy Developers.
+
+
+
+
+Created using Sphinx 5.3.0.
+
+
+
+
+
