@@ -1,0 +1,7 @@
+langchain==0.1.6
+transformers==4.37.2
+fastapi==0.109.2
+python-dotenv==1.0.1
+sentence-transformers==2.3.1
+faiss-cpu==1.7.4
+unstructured==0.12.4
