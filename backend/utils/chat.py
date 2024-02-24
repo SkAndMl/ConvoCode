@@ -12,10 +12,10 @@ together.api_key = os.environ.get("TOGETHER_API_KEY_SK")
 
 # ------- CONSTANTS ------
 EMBEDDING_MODEL = "BAAI/bge-base-en-v1.5"
-INDEX_PATH = "./vector_stores/index"
-LLM="togethercomputer/llama-2-13b-chat"
+INDEX_PATH = "vector_stores/index"
+LLM="mistralai/Mistral-7B-Instruct-v0.2"
 K = 3
-TEMPERATURE=0.1,
+TEMPERATURE=0.1
 MAX_TOKENS=512
 SYSTEM_PROMPT="""
 You are an expert code assistant that specializes in python data science libraries.
