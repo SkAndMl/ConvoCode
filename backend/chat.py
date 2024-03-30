@@ -12,10 +12,10 @@ together.api_key = os.environ.get("TOGETHER_API_KEY_SK")
 
 # ------- CONSTANTS ------
 EMBEDDING_MODEL = "BAAI/bge-base-en-v1.5"
-INDEX_PATH = "./vector_stores/index"
-LLM="togethercomputer/llama-2-13b-chat"
+INDEX_PATH = "vector_stores/index/"
+LLM="mistralai/Mistral-7B-Instruct-v0.2"
 K = 3
-TEMPERATURE=0.1,
+TEMPERATURE=0.1
 MAX_TOKENS=512
 SYSTEM_PROMPT="""
 You are an expert code assistant that specializes in python data science libraries.
@@ -28,7 +28,7 @@ Context: {context}
 """
 PROMPT = f"<s>[INST]{SYSTEM_PROMPT}[/INST]"
 # -----------------------
-
+library = None
 # ------- OBJECTS --------
 embedding = HuggingFaceBgeEmbeddings(
     model_name=EMBEDDING_MODEL,
@@ -36,12 +36,18 @@ embedding = HuggingFaceBgeEmbeddings(
         "normalize_embeddings" : True
     }
 )
-index = FAISS.load_local(
-    folder_path=INDEX_PATH,
-    embeddings=embedding
-)
 
-retriever = index.as_retriever(search_kwargs={"k" : K})
+def get_index(lib):
+    index = FAISS.load_local(
+        folder_path=INDEX_PATH+f"{lib}",
+        embeddings=embedding
+    )
+    return index
+
+retriever = get_index(library).as_retriever(search_kwargs={"k" : K})
+
+# retriever = index.as_retriever(search_kwargs={"k" : K})
+
 # -----------------------
 
 
@@ -68,8 +74,10 @@ def get_answer(query: str) -> str:
 
 if __name__ == "__main__":
 
+    
     while True:
 
+        library = input("Enter the library name you want to learn about:")
         query = input("Enter your query: ")
         if query=='q':
             print("Exitting chat...")
