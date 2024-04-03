@@ -3,6 +3,8 @@ import os
 from langchain.vectorstores.faiss import FAISS
 from langchain.embeddings.huggingface import HuggingFaceBgeEmbeddings
 from dotenv import load_dotenv, find_dotenv
+from .constants import EMBEDDING_MODEL, INDEX_PATH, LLM, K, TEMPERATURE
+from .constants import MAX_TOKENS, PROMPT
 
 from langchain.schema import Document
 from typing import List
@@ -10,24 +12,8 @@ from typing import List
 load_dotenv(find_dotenv())
 together.api_key = os.environ.get("TOGETHER_API_KEY_SK")
 
-# ------- CONSTANTS ------
-EMBEDDING_MODEL = "BAAI/bge-base-en-v1.5"
-INDEX_PATH = "vector_stores/index"
-LLM="mistralai/Mistral-7B-Instruct-v0.2"
-K = 3
-TEMPERATURE=0.1
-MAX_TOKENS=512
-SYSTEM_PROMPT="""
-You are an expert code assistant that specializes in python data science libraries.
-Your job is to answer the user query based on the context provided. 
-The users query will be around the python data science libraries and the user always prefers an answer with code example.
-Keep your answers short and precise.
-Start your response with 'Answer: '.
-Query: {query}
-Context: {context}
-"""
-PROMPT = f"<s>[INST]{SYSTEM_PROMPT}[/INST]"
-# -----------------------
+
+INDEX_PATH = "vector_stores/{library_name}"
 
 # ------- OBJECTS --------
 embedding = HuggingFaceBgeEmbeddings(
@@ -45,9 +31,15 @@ retriever = index.as_retriever(search_kwargs={"k" : K})
 # -----------------------
 
 
-def get_answer(query: str) -> str:
+def get_answer(query: str, library_name: str) -> str:
     
-    chunks: List[Document] = retriever.get_relevant_documents(query=query)
+    index = FAISS.load_local(folder_path=INDEX_PATH.format(library_name=library_name),
+                             embeddings=embedding)
+
+    chunks: List[Document] = index.similarity_search(
+        query=query,
+        k=K
+    )
     
     context = ""
     for i, chunk in enumerate(chunks):
@@ -64,15 +56,3 @@ def get_answer(query: str) -> str:
     )
 
     return output["output"]["choices"][0]["text"]
-
-
-if __name__ == "__main__":
-
-    while True:
-
-        query = input("Enter your query: ")
-        if query=='q':
-            print("Exitting chat...")
-            break
-        answer = get_answer(query=query)
-        print(f"Answer is {answer}")
