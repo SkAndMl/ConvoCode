@@ -16,7 +16,7 @@ class Embedding(nn.Module):
         self.vocab_size = vocab_size
         self.token_embedding_table = nn.Embedding(num_embeddings=vocab_size,
                                                   embedding_dim=config["d_model"])
-        self.position_embedding_table = nn.Embedding(num_embeddings=config["context_length"],
+        self.position_embedding_table = nn.Embedding(num_embeddings=config["block_size"],
                                                      embedding_dim=config["d_model"])
         self.dropout = nn.Dropout(p=config["dropout"])
     
@@ -143,7 +143,7 @@ class CodeGPT(nn.Module):
     def __init__(self, config, vocab_size) -> None:
         
         super().__init__()
-        self.context_length = config["context_length"]
+        self.context_length = config["block_size"]
         self.embedding = Embedding(config, vocab_size)
         self.gpt = GPTDecoder(config)
         self.lm_head = nn.Linear(config["d_model"], vocab_size)

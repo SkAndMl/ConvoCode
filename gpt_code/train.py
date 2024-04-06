@@ -3,17 +3,26 @@ import torch.nn as nn
 from torch.nn import functional as F
 from typing import Tuple, Dict
 import json
+from torch.cuda.amp import GradScaler, autocast
+from contextlib import nullcontext
 
 from model import CodeGPT
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
+ctx = autocast(enabled=True, dtype=torch.float16) if device=="cuda" else nullcontext()
 
 with open("config.json", "r") as f:
     config = json.load(f)
 
-with open("data.txt", "r", encoding="utf-8") as f:
-    data = f.read()
+with open("train.txt", "r", encoding="utf-8") as f:
+    train = f.read()
 
+with open("valid.txt", "r", encoding="utf-8") as f:
+    valid = f.read()
+
+train_len = len(train)
+
+data = train + valid
 
 chars = sorted(list(set(data)))
 vocab_size = len(chars)
@@ -25,9 +34,8 @@ decode = lambda l: "".join([itos[i] for i in l])
 
 data = torch.tensor(encode(data))
 
-n = int(0.9*len(data))
-train_data = data[:n]
-val_data = data[n:]
+train_data = data[:train_len]
+val_data = data[train_len:]
 
 
 def get_random_batch(split: str="train") -> Tuple[torch.Tensor, torch.Tensor]:
@@ -54,7 +62,10 @@ def eval_model() -> Dict[str, float]:
         loss = 0
         for _ in range(config["eval_iters"]):
             x_batch, y_batch = get_random_batch(split)
-            _, l_ = gpt(x_batch, y_batch)
+            
+            with ctx:
+                _, l_ = gpt(x_batch, y_batch)
+            
             loss += l_.item()
         
         losses[split] = loss/config["eval_iters"]
@@ -72,17 +83,21 @@ def train():
             print(f"iter {iter} train_loss: {losses['train']} val_loss: {losses['val']}")
         
         x_batch, y_batch = get_random_batch()
-        _, loss = gpt(x_batch, y_batch)
+    
+        with ctx:
+            _, loss = gpt(x_batch, y_batch)
 
+        scaler.scale(loss).backward()  
+        scaler.step(optimizer)
+        scaler.update()
         optimizer.zero_grad(set_to_none=True)
-        loss.backward()
-        optimizer.step()
 
 
 gpt = CodeGPT(config, vocab_size)
 gpt = gpt.to(device)
 optimizer = torch.optim.AdamW(params=gpt.parameters(),
                               lr=config["learning_rate"])
+scaler = GradScaler(enabled=True)
 
 
 if __name__ == "__main__":

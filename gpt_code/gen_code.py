@@ -8,8 +8,8 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 with open("config.json") as f:
     config = json.load(f)
 
-with open("data.txt", "r", encoding="utf=8") as f:
-    data = f.read()
+with open("train.txt", "r", encoding="utf=8") as train, open("valid.txt", "r", encoding="utf-8") as valid:
+    data = train.read() + valid.read()
     chars = sorted(list(set(data)))
     vocab_size = len(chars)
     itos = {i: ch for i, ch in enumerate(chars)}
