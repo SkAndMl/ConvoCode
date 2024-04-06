@@ -6,7 +6,6 @@ import json
 
 from model import CodeGPT
 
-
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 with open("config.json", "r") as f:
@@ -52,9 +51,8 @@ def eval_model() -> Dict[str, float]:
     gpt.eval()
 
     for split in ["train", "val"]:
-        data = train_data if split=="train" else val_data
         loss = 0
-        for iter in range(config["eval_iters"]):
+        for _ in range(config["eval_iters"]):
             x_batch, y_batch = get_random_batch(split)
             _, l_ = gpt(x_batch, y_batch)
             loss += l_.item()
