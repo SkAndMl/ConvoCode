@@ -182,6 +182,62 @@ class CodeGPT(nn.Module):
             x = torch.cat((x, x_next), dim=1) # B, S+1
 
         return x
+    
+
+class ParallelCodeGPT(nn.Module):
+
+    def __init__(self, config, vocab_size) -> None:
+        
+        super().__init__()
+        self.d_model = config["d_model"]
+        self.context_length = config["block_size"]
+        config["d_model"] *= 2
+        self.embedding = Embedding(config, vocab_size)
+        config["n_decoders"] //= 2
+        config["d_model"] //= 2
+        self.block_1 = GPTDecoder(config)
+        self.block_2 = GPTDecoder(config)
+        self.weight = nn.Parameter(data=0.5, requires_grad=True)
+        self.lm_head = nn.Linear(config["d_model"], vocab_size)
+    
+    def forward(self,
+                x: torch.Tensor,
+                targets: torch.Tensor = None) -> Tuple[torch.Tensor, torch.Tensor]:
+        
+        B, S = x.shape
+        # x -> [B, S], targets -> [B, S]
+        x: torch.Tensor = self.embedding(x) # B, S, D_MODEL*2
+        mask = create_causal_mask(S)
+        
+        x1, x2 = x.split(split_size=self.d_model, dim=-1)
+
+        x1 = self.block_1(x1, mask)
+        x2 = self.block_2(x2, mask)
+        x = self.weight*x1 + (1-self.weight)*x2
+        logits = self.lm_head(x) # B, S, VOCAB_SIZE
+
+        if targets is None:
+            loss = None
+        else:
+            logits = logits.view(B*S, -1)
+            targets = targets.view(-1)
+            loss = F.cross_entropy(logits, targets)
+        return logits, loss
+    
+
+    def generate(self, x:torch.Tensor=None, max_new_tokens: int=500) -> torch.Tensor:
+
+        if x is None:
+            x = torch.zeros((1, 1), dtype=torch.long, device=device) # B, S
+        
+        for _ in range(max_new_tokens):
+            preds, _ = self(x[:, -self.context_length:])# B, S, VOCAB_SIZE
+            preds = preds[:, -1, :] # B, VOCAB_SIZE
+            probs = F.softmax(preds, dim=-1)
+            x_next = torch.multinomial(input=probs, num_samples=1) # B, 1
+            x = torch.cat((x, x_next), dim=1) # B, S+1
+
+        return x
 
 
 def create_causal_mask(sz):

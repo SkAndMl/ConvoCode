@@ -9,5 +9,6 @@
     "learning_rate" : 3e-4,
     "n_decoders" : 4,
     "n_heads" : 6,
-    "train_iters" : 10000
+    "train_iters" : 10000,
+    "weight_decay": 1e-3
 }
