@@ -16,15 +16,13 @@ async def create_user_route(username: str=Body(...),
     if user_doc is not None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="email already exists")
     
-    user_id = collection_users.insert_one(
-        {
-            "username" : username,
-            "email" : email,
-            "password" : hash_password(password)
-        }
-    )
+    user_id = collection_users.insert_one(document={
+        "username": username,
+        "email": email,
+        "password": hash_password(password)
+    }).inserted_id
 
-    return {"user_id" : user_id}
+    return {"user_id" : str(user_id)}
 
 
 @router.post("/login")

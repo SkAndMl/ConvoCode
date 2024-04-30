@@ -13,7 +13,7 @@ DIR_PATH = "./data/{library_name}"
 EMBEDDING_MODEL = "BAAI/bge-base-en-v1.5"
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 200
-INDEX_PATH = "./vector_stores/{library_name}"
+INDEX_PATH = "./vectorstores/{library_name}"
 # -----------------------
 
 
