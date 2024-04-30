@@ -9,3 +9,4 @@ db = MongoClient(uri)["codetool"]
 
 collection_users = db["users"]
 collection_chats = db["chats"]
+collection_codes = db["codes"]
