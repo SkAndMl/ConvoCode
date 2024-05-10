@@ -24,13 +24,13 @@ async def get_old_chat(user_id: str=Body(...),
     
     chats = [
         {
-            "role": "user" if i%2==0 else "bot",
+            "direction": "incoming" if i%2==0 else "outgoing",
             "text": chat['text']
         }
         for i, chat in enumerate(chat_doc['chat'])
     ]
 
-    return chats
+    return {"chat_history": chats}
 
 
 @router.post("/chat")
