@@ -61,7 +61,7 @@ config = genai.GenerationConfig(temperature=TEMPERATURE,
 
 def get_answer(query: str, library_name: str) -> str:
 
-    index = FAISS.load_local(folder_path=INDEX_PATH.format(library_name=library_name),
+    index = FAISS.load_local(folder_path=INDEX_PATH.format(library_name="".join(library_name.lower().split())),
                              embeddings=embedding)
     chunks: List[Document] = index.similarity_search(
         query=query,
