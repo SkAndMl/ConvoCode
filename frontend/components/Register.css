@@ -1,0 +1,70 @@
+
+  .App{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px;
+    width: 50%; 
+    margin: 50px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 10px;
+    display: flex;  
+    flex-direction: column; 
+    align-items: center; 
+  }
+  
+  .form-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .form-input {
+    width: 120%;
+    padding: 12px 10px;
+    border: 1.5px solid #333;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+    font-size: 16px;
+  }
+  
+  .submit-button {
+    border: 2px solid #333;
+    background-color: #000;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 150%;
+    max-width: 250px;
+    margin-top: 15px; 
+    
+  }
+
+  .submit-button:hover {
+    background-color: #4b4b46;
+    color: #fff;
+  }

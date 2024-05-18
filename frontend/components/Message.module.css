@@ -1,0 +1,28 @@
+.wrapper {
+  display: grid;
+  grid-template-columns: 60px auto;
+  min-height: 60px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  background-color: #1b1b1d;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+}
+
+.contentContainer {
+  display: flex;
+  align-items: center; 
+}
+
+.feedbackButton {
+  margin-left: auto; 
+  margin-right: 10px; 
+}
+
+.secondButton {
+  margin-right: 0; 
+}

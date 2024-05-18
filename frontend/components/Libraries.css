@@ -1,0 +1,31 @@
+.App{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: aliceblue;
+  height: 100vh;
+  }
+
+  .library-text{
+    font-size: 25px;
+    margin-bottom: 25px;
+  }
+  .avatar {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .library-container {
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-left: -10px; 
+    margin-right: -10px; 
+  }
+  
+  .library-container button {
+    margin-left: 75px; 
+    margin-right: 75px; 
+  }
